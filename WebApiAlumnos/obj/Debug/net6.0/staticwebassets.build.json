@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "Hash": "+NTYclhcXnVakjxV5WwZIOpvkodtWV1+IBBC3iUmqTw=",
+  "Source": "WebApiAlumnos",
+  "BasePath": "_content/WebApiAlumnos",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "WebApiAlumnos\\wwwroot",
+      "Source": "WebApiAlumnos",
+      "ContentRoot": "C:\\Users\\Gustavo Rdz\\Documents\\Gustavo\\Proyectos\\WebApiAlumnos\\WebApiAlumnos\\wwwroot\\",
+      "BasePath": "_content/WebApiAlumnos",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\Gustavo Rdz\\Documents\\Gustavo\\Proyectos\\WebApiAlumnos\\WebApiAlumnos\\wwwroot\\Archivo 1.txt",
+      "SourceId": "WebApiAlumnos",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Gustavo Rdz\\Documents\\Gustavo\\Proyectos\\WebApiAlumnos\\WebApiAlumnos\\wwwroot\\",
+      "BasePath": "_content/WebApiAlumnos",
+      "RelativePath": "Archivo 1.txt",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Archivo 1.txt"
+    }
+  ]
+}
