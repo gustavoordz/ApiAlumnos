@@ -18,10 +18,14 @@ namespace WebApiAlumnos.Controllers
         private readonly ServiceScoped serviceScoped;
         private readonly ServiceSingleton serviceSingleton;
         private readonly ILogger<AlumnosController> logger;
-
+        private readonly IWebHostEnvironment env;
+        private readonly string nuevosRegistros = "nuevosRegistros.txt";
+        private readonly string registrosConsultados = "registrosConsultados.txt";
+        
         public AlumnosController(ApplicationDbContext context, IService service,
             ServiceTransient serviceTransient, ServiceScoped serviceScoped,
-            ServiceSingleton serviceSingleton, ILogger<AlumnosController> logger)
+            ServiceSingleton serviceSingleton, ILogger<AlumnosController> logger,
+            IWebHostEnvironment env)
         {
             this.dbContext = context;
             this.service = service;
@@ -29,13 +33,16 @@ namespace WebApiAlumnos.Controllers
             this.serviceScoped = serviceScoped;
             this.serviceSingleton = serviceSingleton;
             this.logger = logger;
+            this.env = env;
         }
 
         [HttpGet("GUID")]
-        //[ResponseCache(Duration = 10)]
+        [ResponseCache(Duration = 10)]
         [ServiceFilter(typeof(FiltroDeAccion))]
         public ActionResult ObtenerGuid()
         {
+            throw new NotImplementedException();
+            logger.LogInformation("Durante la ejecucion");
             return Ok(new
             {
                 AlumnosControllerTransient = serviceTransient.guid,
@@ -50,10 +57,10 @@ namespace WebApiAlumnos.Controllers
         [HttpGet] 
         [HttpGet("listado")] 
         [HttpGet("/listado")]
-        //[ResponseCache(Duration = 10)]
+        //[ResponseCache(Duration = 15)]
         //[Authorize]
-        [ServiceFilter(typeof(FiltroDeAccion))]
-        public async Task<ActionResult<List<Alumno>>> Get()
+        //[ServiceFilter(typeof(FiltroDeAccion))]
+        public async Task<ActionResult<List<Alumno>>> GetAlumnos()
         {
             //* Niveles de logs
             // Critical
@@ -71,7 +78,7 @@ namespace WebApiAlumnos.Controllers
         }
 
         [HttpGet("primero")] //api/alumnos/primero?
-        public async Task<ActionResult<Alumno>> PrimerAlumno([FromHeader] int valor, [FromQuery] string alumno, [FromQuery] int alumnoId)
+        public async Task<ActionResult<Alumno>> PrimerAlumno()
         {
             return await dbContext.Alumnos.FirstOrDefaultAsync();
         }
@@ -81,6 +88,8 @@ namespace WebApiAlumnos.Controllers
         {
             return new Alumno { Nombre = "Gustavo"};
         }
+
+        // api/alumnos?nombre=...
 
         [HttpGet("{param?}")] //Se puede usar ? para que no sea obligatorio el parametro /{param=Gustavo}  getAlumno/{id:int}/
         public async Task<ActionResult<Alumno>> Get(int id, string param)
@@ -107,6 +116,9 @@ namespace WebApiAlumnos.Controllers
                 logger.LogError("No se encuentra el alumno. ");
                 return NotFound();
             }
+            
+            var ruta = $@"{env.ContentRootPath}\wwwroot\{registrosConsultados}";
+            using (StreamWriter writer = new StreamWriter(ruta, append: true)) { writer.WriteLine(alumno.Id + " " + alumno.Nombre); }
 
             return alumno;
         }
@@ -123,8 +135,13 @@ namespace WebApiAlumnos.Controllers
                 return BadRequest("Ya existe un autor con el nombre");
             }
 
+            
             dbContext.Add(alumno);
             await dbContext.SaveChangesAsync();
+
+         //   var ruta = $@"{env.ContentRootPath}\wwwroot\{nuevosRegistros}";
+          //  using (StreamWriter writer = new StreamWriter(ruta, append: true)) { writer.WriteLine(alumno.Id + " " + alumno.Nombre); }
+
             return Ok();
         }
 
